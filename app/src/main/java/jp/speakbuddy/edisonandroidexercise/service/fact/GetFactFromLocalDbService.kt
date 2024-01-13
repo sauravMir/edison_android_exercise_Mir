@@ -1,8 +1,9 @@
 package jp.speakbuddy.edisonandroidexercise.service.fact
 
 import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.GetFactFromLocalDbRepo
+import javax.inject.Inject
 
-class GetFactFromLocalDbService {
+class GetFactFromLocalDbService @Inject constructor() {
     suspend fun getFactStringFromLocalDb(key: String, getFactFromLocalDbRepo: GetFactFromLocalDbRepo): String? {
         return getFactFromLocalDbRepo.getFactStringFromLocalDb(key)
     }

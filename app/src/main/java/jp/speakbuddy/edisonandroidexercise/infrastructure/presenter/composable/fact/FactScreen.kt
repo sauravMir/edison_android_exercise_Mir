@@ -18,12 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.speakbuddy.edisonandroidexercise.infrastructure.di.NetworkModule
+import jp.speakbuddy.edisonandroidexercise.infrastructure.network.fact.networkservice.FactServiceProvider
 import jp.speakbuddy.edisonandroidexercise.infrastructure.network.fact.repository.GetFactRepoImpl
 import jp.speakbuddy.edisonandroidexercise.infrastructure.presenter.viewmodels.fact.FactViewModel
 import jp.speakbuddy.edisonandroidexercise.infrastructure.utils.constant.Constants
 import jp.speakbuddy.edisonandroidexercise.infrastructure.utils.theme.EdisonAndroidExerciseTheme
 import jp.speakbuddy.edisonandroidexercise.model.entities.fact.Fact
 import jp.speakbuddy.edisonandroidexercise.service.fact.GetFactService
+import retrofit2.Retrofit
 
 @Composable
 fun FactScreen(
@@ -52,22 +55,22 @@ fun FactScreen(
             style = MaterialTheme.typography.titleLarge
         )
 
-        if(factViewModel.isMultipleCats(factStr))
-        Text(
-            text = Constants.MULTIPLE_CATS,
-            style = MaterialTheme.typography.titleLarge
-        )
+        if (factViewModel.isMultipleCats(factStr))
+            Text(
+                text = Constants.MULTIPLE_CATS,
+                style = MaterialTheme.typography.titleLarge
+            )
 
         Text(
             text = factStr,
             style = MaterialTheme.typography.bodyLarge
         )
 
-        if(factViewModel.isLengthGreaterThan100(factStr))
-        Text(
-            text = "Length: $factLength",
-            style = MaterialTheme.typography.bodyLarge
-        )
+        if (factViewModel.isLengthGreaterThan100(factStr))
+            Text(
+                text = "Length: $factLength",
+                style = MaterialTheme.typography.bodyLarge
+            )
 
         val onClick = {
             onClickUpdate()
@@ -83,6 +86,6 @@ fun FactScreen(
 @Composable
 private fun FactScreenPreview() {
     EdisonAndroidExerciseTheme {
-        FactScreen(FactViewModel(GetFactRepoImpl(), GetFactService()), {})
+        FactScreen(FactViewModel(GetFactRepoImpl(FactServiceProvider(NetworkModule.provideRetrofit())), GetFactService()), {})
     }
 }

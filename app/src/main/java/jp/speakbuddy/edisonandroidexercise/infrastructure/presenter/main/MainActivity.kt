@@ -15,10 +15,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import jp.speakbuddy.edisonandroidexercise.infrastructure.localdb.db.dto.DataStoreDto
+import dagger.hilt.android.AndroidEntryPoint
 import jp.speakbuddy.edisonandroidexercise.infrastructure.localdb.db.keys.LocalDBKeys
-import jp.speakbuddy.edisonandroidexercise.infrastructure.localdb.fact.GetFactFromLocalDbRepoImpl
-import jp.speakbuddy.edisonandroidexercise.infrastructure.localdb.fact.SaveFactRepoImpl
 import jp.speakbuddy.edisonandroidexercise.infrastructure.network.fact.repository.GetFactRepoImpl
 import jp.speakbuddy.edisonandroidexercise.infrastructure.presenter.composable.fact.FactScreen
 import jp.speakbuddy.edisonandroidexercise.infrastructure.presenter.viewmodels.fact.FactViewModel
@@ -29,33 +27,25 @@ import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.SaveFactRepo
 import jp.speakbuddy.edisonandroidexercise.service.fact.GetFactService
 import jp.speakbuddy.edisonandroidexercise.service.fact.SaveFactService
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 private const val FACT_NAME = "Fact"
 val Context.dataStore : DataStore<Preferences> by preferencesDataStore(
 name = FACT_NAME
 )
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val getFactRepo: GetFactRepoImpl = GetFactRepoImpl()
-    private val getFactService: GetFactService = GetFactService()
-    private val saveFactService: SaveFactService = SaveFactService()
-    private var dataStoreDto:DataStoreDto? = null
-    private var saveFactRepo: SaveFactRepo? = null
-    private var getFactFromLocalDbRepo: GetFactFromLocalDbRepo? = null
+     @Inject lateinit var saveFactService: SaveFactService
+     @Inject lateinit var saveFactRepo: SaveFactRepo
+     @Inject lateinit var getFactFromLocalDbRepo: GetFactFromLocalDbRepo
 
 
     private val onErrorFact: Fact = Fact("", 0)
-    var viewModel: FactViewModel? = null
-    private var viewModelFactory: FactViewModelFactory? = null
+    val viewModel:FactViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModelFactory = FactViewModelFactory(getFactRepo, getFactService)
-        viewModelFactory?.let {
-            viewModel = ViewModelProvider(this, it)[FactViewModel::class.java]
-        }
-        dataStoreDto = DataStoreDto(dataStore)
-        saveFactRepo = SaveFactRepoImpl(dataStoreDto!!)
-        getFactFromLocalDbRepo = GetFactFromLocalDbRepoImpl(dataStoreDto!!)
         setContent {
             EdisonAndroidExerciseTheme {
                 // A surface container using the 'background' color from the theme
@@ -63,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FactScreen(viewModel!!) {
+                    FactScreen(viewModel) {
                         onClickUpdate()
                     }
                 }
@@ -73,21 +63,21 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onClickUpdate() {
-        viewModel?.updateFact(onErrorFact)
+        viewModel.updateFact(onErrorFact)
     }
-    fun observeFactsData() {
-        viewModel?.facts?.observe(this) {
-            viewModel?.viewModelScope?.launch {
-                viewModel?.saveFact(saveFactService, saveFactRepo!!, it)
+    private fun observeFactsData() {
+        viewModel.facts.observe(this) {
+            viewModel.viewModelScope.launch {
+                viewModel.saveFact(saveFactService, saveFactRepo, it)
             }
         }
     }
 
-    fun readDataStore() {
-        viewModel?.viewModelScope?.launch {
-            val factString = viewModel?.readFactString(LocalDBKeys.FACT_STRING, getFactFromLocalDbRepo!!) ?: ""
-            val length = viewModel?.readFactLength(LocalDBKeys.FACT_LENGTH_INT, getFactFromLocalDbRepo!!) ?: 0
-            viewModel?.updateFactFromLocalDb(Fact.createFact(factString, length))
+    private fun readDataStore() {
+        viewModel.viewModelScope.launch {
+            val factString = viewModel.readFactString(LocalDBKeys.FACT_STRING, getFactFromLocalDbRepo) ?: ""
+            val length = viewModel.readFactLength(LocalDBKeys.FACT_LENGTH_INT, getFactFromLocalDbRepo) ?: 0
+            viewModel.updateFactFromLocalDb(Fact.createFact(factString, length))
         }
     }
 

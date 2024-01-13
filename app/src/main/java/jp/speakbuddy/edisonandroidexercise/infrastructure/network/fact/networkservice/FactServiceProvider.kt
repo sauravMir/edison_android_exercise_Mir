@@ -1,8 +1,9 @@
 package jp.speakbuddy.edisonandroidexercise.infrastructure.network.fact.networkservice
 
 import retrofit2.Retrofit
+import javax.inject.Inject
 
-object FactServiceProvider {
+class FactServiceProvider @Inject constructor(val retrofit: Retrofit) {
 
-    fun provide(retrofit: Retrofit): FactService = retrofit.create(FactService::class.java)
+    fun provide(): FactService = retrofit.create(FactService::class.java)
 }

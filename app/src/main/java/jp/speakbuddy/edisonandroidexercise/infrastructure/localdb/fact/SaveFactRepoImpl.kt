@@ -8,8 +8,9 @@ import jp.speakbuddy.edisonandroidexercise.infrastructure.localdb.db.keys.LocalD
 import jp.speakbuddy.edisonandroidexercise.model.entities.fact.Fact
 import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.SaveFactRepo
 import java.io.IOException
+import javax.inject.Inject
 
-class SaveFactRepoImpl constructor(
+class SaveFactRepoImpl @Inject constructor(
     private val dataStoreDto: DataStoreDto,
 ) : SaveFactRepo {
     override suspend fun saveFact(fact: Fact): Boolean {

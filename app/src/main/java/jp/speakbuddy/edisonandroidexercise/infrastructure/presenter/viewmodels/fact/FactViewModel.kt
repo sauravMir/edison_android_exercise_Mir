@@ -3,17 +3,20 @@ package jp.speakbuddy.edisonandroidexercise.infrastructure.presenter.viewmodels.
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jp.speakbuddy.edisonandroidexercise.infrastructure.network.fact.repository.GetFactRepoImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.speakbuddy.edisonandroidexercise.infrastructure.utils.constant.Constants
 import jp.speakbuddy.edisonandroidexercise.model.entities.fact.Fact
 import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.GetFactFromLocalDbRepo
+import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.GetFactRepo
 import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.SaveFactRepo
 import jp.speakbuddy.edisonandroidexercise.service.fact.GetFactService
 import jp.speakbuddy.edisonandroidexercise.service.fact.SaveFactService
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FactViewModel(
-    private val factRepo: GetFactRepoImpl,
+@HiltViewModel
+class FactViewModel @Inject constructor(
+    private val factRepo: GetFactRepo,
     private val factService: GetFactService
 ) : ViewModel() {
     private var _facts = MutableLiveData<Fact>()
