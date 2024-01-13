@@ -1,4 +1,4 @@
-package jp.speakbuddy.edisonandroidexercise.service
+package jp.speakbuddy.edisonandroidexercise.service.fact
 
 import jp.speakbuddy.edisonandroidexercise.model.entities.fact.Fact
 import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.GetFactRepo

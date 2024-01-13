@@ -10,19 +10,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.speakbuddy.edisonandroidexercise.infrastructure.network.fact.repository.GetFactRepoImpl
 import jp.speakbuddy.edisonandroidexercise.infrastructure.presenter.viewmodels.fact.FactViewModel
+import jp.speakbuddy.edisonandroidexercise.infrastructure.utils.constant.Constants
 import jp.speakbuddy.edisonandroidexercise.infrastructure.utils.theme.EdisonAndroidExerciseTheme
+import jp.speakbuddy.edisonandroidexercise.model.entities.fact.Fact
+import jp.speakbuddy.edisonandroidexercise.service.fact.GetFactService
 
 @Composable
 fun FactScreen(
-    viewModel: FactViewModel
+    factViewModel: FactViewModel,
+    onClickUpdate: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -35,20 +41,36 @@ fun FactScreen(
             alignment = Alignment.CenterVertically
         )
     ) {
-        var fact by remember { mutableStateOf("") }
+        var factStr by rememberSaveable { mutableStateOf("") }
+        var factLength by rememberSaveable { mutableStateOf(0) }
+        val fact by factViewModel.facts.observeAsState(Fact(factStr, factLength))
 
+        factStr = fact.fact
+        factLength = fact.length
         Text(
             text = "Fact",
             style = MaterialTheme.typography.titleLarge
         )
 
+        if(factViewModel.isMultipleCats(factStr))
         Text(
-            text = fact,
+            text = Constants.MULTIPLE_CATS,
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        Text(
+            text = factStr,
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        if(factViewModel.isLengthGreaterThan100(factStr))
+        Text(
+            text = "Length: $factLength",
             style = MaterialTheme.typography.bodyLarge
         )
 
         val onClick = {
-            fact = viewModel.updateFact { print("done") }
+            onClickUpdate()
         }
 
         Button(onClick = onClick) {
@@ -61,6 +83,6 @@ fun FactScreen(
 @Composable
 private fun FactScreenPreview() {
     EdisonAndroidExerciseTheme {
-        FactScreen(viewModel = FactViewModel())
+        FactScreen(FactViewModel(GetFactRepoImpl(), GetFactService()), {})
     }
 }

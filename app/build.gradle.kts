@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.retrofit.converter)
     implementation(libs.okhttp3)
     implementation(libs.retrofit2)
+    implementation(libs.runtime.live.data.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

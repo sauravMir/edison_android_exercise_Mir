@@ -4,6 +4,7 @@ runtimektx = "2.5.1"
 activitycompose = "1.6.1"
 composeui = "1.3.3"
 uitooling = "1.3.3"
+runtime-live-data-compose = "1.3.3"
 material3 = "1.0.1"
 datastore-preferences = "1.0.0"
 datastore = "1.0.0"
@@ -15,12 +16,13 @@ retrofit-converter = "0.8.0"
 okhttp = "4.10.0"
 retrofit2 = "2.9.0"
 
-junit = "1.13.2"
+junit = "4.13.2"
 androidx-junit = "1.1.5"
 espresso = "3.5.1"
 compose-uitest = "1.3.3"
 compose-uitooling = "1.3.3"
 compose-uitestmanifest = "1.3.3"
+
 
 
 [libraries]
@@ -30,6 +32,7 @@ androidx-activity = { group = "androidx.activity", name = "activity-compose", ve
 androidx-compose = { group = "androidx.compose.ui", name = "ui", version.ref = "composeui" }
 androidx-composeuitooling = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uitooling" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+runtime-live-data-compose= { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtime-live-data-compose" }
 androidx-datastore-prefs = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
