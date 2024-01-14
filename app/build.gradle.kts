@@ -96,6 +96,9 @@ dependencies {
     implementation(libs.runtime.live.data.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.arch.coretesting)
+    testImplementation(libs.coroutine.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso)
     androidTestImplementation(libs.compose.uitest)

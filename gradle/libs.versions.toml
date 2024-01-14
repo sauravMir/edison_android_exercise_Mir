@@ -22,6 +22,9 @@ espresso = "3.5.1"
 compose-uitest = "1.3.3"
 compose-uitooling = "1.3.3"
 compose-uitestmanifest = "1.3.3"
+mockk = "1.13.9"
+arch-coretesting = "2.2.0"
+coroutine-test = "1.5.0"
 
 
 
@@ -44,6 +47,9 @@ okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okht
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+arch-coretesting = { group = "androidx.arch.core", name = "core-testing", version.ref = "arch-coretesting" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine-test" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 compose-uitest = { group = "ndroidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-uitest" }

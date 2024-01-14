@@ -8,7 +8,7 @@ import jp.speakbuddy.edisonandroidexercise.model.repositories.fact.GetFactFromLo
 import kotlinx.coroutines.flow.first
 import java.io.IOException
 
-class GetFactFromLocalDbRepoImpl constructor(
+class GetFactFromLocalDbRepoImpl (
     private val dataStoreDto: DataStoreDto,
 ): GetFactFromLocalDbRepo {
     override suspend fun getFactStringFromLocalDb(key: String): String? {
